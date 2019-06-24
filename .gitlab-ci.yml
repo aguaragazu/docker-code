@@ -1,10 +1,10 @@
 image: docker:stable
 
 variables:
-  LATEST_VER: aguaragazu/code:latest
-  MAJOR_VER: aguaragazu/code:2
-  MINOR_VER: aguaragazu/code:2.3
-  PATCH_VER: aguaragazu/code:2.3.1
+  LATEST_VER: docker.io/aguaragazu/code:latest
+  MAJOR_VER: docker.io/aguaragazu/code:2
+  MINOR_VER: docker.io/aguaragazu/code:2.3
+  PATCH_VER: docker.io/aguaragazu/code:2.3.1
 
 stages:
   - Build image
