@@ -10,8 +10,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \ 
     gnupg \
-    iputils-ping \
-    mariadb-client \
+	mariadb-server \
+	mariadb-client \
     python3.7 \
     python3.7-dev \
     python3.7-venv \
@@ -31,6 +31,35 @@ RUN apt-get update && apt-get install -y \
 # Add add-apt-repository command
 RUN apt-get update && \
     apt-get install -y software-properties-common
+
+# Add Repo ppa:ondrej/php
+# Install php common extension
+# zip and unzip is essential component for composer to run 
+RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php && \
+    apt-get update && \
+    apt-get install -y php7.3-fpm \
+                    php7.3-common \
+                    php7.3-mysql \
+                    php7.3-pdo \
+                    php7.3-xml \
+                    php7.3-xmlrpc \
+                    php7.3-curl \
+                    php7.3-gd \
+                    php7.3-imagick \
+                    php7.3-cli \
+                    php7.3-dev \
+                    php7.3-mbstring \
+                    php7.3-opcache \
+                    php7.3-soap \
+                    php7.3-imap \
+                    php7.3-zip \
+                    zip \
+                    unzip -y
+
+# Install composer
+# how can a PHP developer miss the Composer :)
+RUN curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+
 
 ENV LANG=en_US.UTF-8
 ENV CDR_VER 1.1156-vsc1.33.1
