@@ -1,10 +1,10 @@
-image: docker:stable
+image: docker:18
 
 variables:
   LATEST_VER: docker.io/aguaragazu/code:latest
-  MAJOR_VER: docker.io/aguaragazu/code:2
-  MINOR_VER: docker.io/aguaragazu/code:2.3
-  PATCH_VER: docker.io/aguaragazu/code:2.3.1
+#  MAJOR_VER: docker.io/aguaragazu/code:2
+#  MINOR_VER: docker.io/aguaragazu/code:2.3
+#  PATCH_VER: docker.io/aguaragazu/code:2.3.1
 
 stages:
   - Build image
@@ -14,7 +14,8 @@ docker build:
   stage: Build image
   script:
   - docker info
-  - docker build -t $LATEST_VER -t $MAJOR_VER -t $MINOR_VER -t $PATCH_VER .
+  - docker build -t $LATEST_VER .
+#  - docker build -t $LATEST_VER -t $MAJOR_VER -t $MINOR_VER -t $PATCH_VER .
 
 docker push:
   stage: Push to Docker Hub
@@ -23,6 +24,6 @@ docker push:
   script:
   - echo "$REGISTRY_PASSWORD" | docker login -u "$REGISTRY_USER" --password-stdin
   - docker push $LATEST_VER && docker image rm $LATEST_VER
-  - docker push $MAJOR_VER && docker image rm $MAJOR_VER
-  - docker push $MINOR_VER && docker image rm $MINOR_VER
-  - docker push $PATCH_VER && docker image rm $PATCH_VER
+#  - docker push $MAJOR_VER && docker image rm $MAJOR_VER
+#  - docker push $MINOR_VER && docker image rm $MINOR_VER
+#  - docker push $PATCH_VER && docker image rm $PATCH_VER

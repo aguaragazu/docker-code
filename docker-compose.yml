@@ -14,14 +14,8 @@ services:
       - /opt/jjsoft/code/local:/home/coder/.local
       - /opt/jjsoft/code/cache:/home/coder/.cache
     ports:
-      - "8082:8443"
-    networks:
-      - network
+      - "8443:8443"
     environment:
       - PASSWORD=password
     command: --allow-http
 
-networks:
-  network: 
-     external: 
-       name: webproxy
