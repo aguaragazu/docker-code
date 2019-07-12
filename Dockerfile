@@ -80,16 +80,16 @@ COPY conf/laravel.ini /etc/php/7.3/fpm/conf.d/laravel.ini
 
 RUN /etc/init.d/php7.3-fpm restart
 
-RUN mkdir /tmp/certgen
-WORKDIR /tmp/certgen
-RUN openssl genrsa -des3 -passout pass:x -out server.pass.key 2048 \
-    && openssl rsa -passin pass:x -in server.pass.key -out server.key \
-    && rm server.pass.key \
-    && openssl req -new -key server.key -out server.csr -subj "/CN=jjsoftsistemas.com" \
-    && openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt \
-    && cp server.crt /etc/ssl/certs/ \
-    && cp server.key /etc/ssl/private/ \
-    && rm -rf /tmp/certgen
+# RUN mkdir /tmp/certgen
+# WORKDIR /tmp/certgen
+# RUN openssl genrsa -des3 -passout pass:x -out server.pass.key 2048 \
+#     && openssl rsa -passin pass:x -in server.pass.key -out server.key \
+#     && rm server.pass.key \
+#     && openssl req -new -key server.key -out server.csr -subj "/CN=jjsoftsistemas.com" \
+#     && openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt \
+#     && cp server.crt /etc/ssl/certs/ \
+#     && cp server.key /etc/ssl/private/ \
+#     && rm -rf /tmp/certgen
 
 # Install Code-Server (Visual Studio Code)
 ENV CDR_VER 1.1156-vsc1.33.1
