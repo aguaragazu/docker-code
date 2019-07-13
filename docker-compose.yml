@@ -8,13 +8,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: aguaragazu/code-server-php:latest
+    image: aguaragazu/code:latest
     volumes:
       - /opt/jjsoft/docker-siges:/home/coder/project
       - /opt/jjsoft/code/local:/home/coder/.local
       - /opt/jjsoft/code/cache:/home/coder/.cache
     ports:
-      - "8443:8443"
+      - 8082:8443
+      - 8080:80
+      - 8081:443
     environment:
       - PASSWORD=password
     command: --allow-http
