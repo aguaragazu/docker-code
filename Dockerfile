@@ -3,6 +3,8 @@ FROM ubuntu:18.04
 LABEL maintainer="Jose Carlos Gallo <josecgallo@jjsoft.com.ar>"
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV MYSQL_ALLOW_EMPTY_PASSWORD=yes
+ENV DOMAIN=SSL_DOMAIN
 
 RUN apt-get update && apt-get install -y \
     openssl \
@@ -12,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     vim \
     git \
     curl \
+    tree \
     wget \ 
     gnupg \
     tzdata \
@@ -73,23 +76,13 @@ RUN LC_ALL=es_AR.UTF-8 add-apt-repository ppa:nginx/stable && \
 # how can a PHP developer miss the Composer :)
 RUN curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 
+COPY conf/my.cnf /etc/mysql/my.cnf
 COPY conf/default.conf /etc/nginx/sites-enabled/default.conf
 COPY conf/php.ini /etc/php/7.3/fpm/php.ini
-
 COPY conf/laravel.ini /etc/php/7.3/fpm/conf.d/laravel.ini
+COPY docker-run.sh /docker-run.sh
 
-RUN /etc/init.d/php7.3-fpm restart
-
-# RUN mkdir /tmp/certgen
-# WORKDIR /tmp/certgen
-# RUN openssl genrsa -des3 -passout pass:x -out server.pass.key 2048 \
-#     && openssl rsa -passin pass:x -in server.pass.key -out server.key \
-#     && rm server.pass.key \
-#     && openssl req -new -key server.key -out server.csr -subj "/CN=jjsoftsistemas.com" \
-#     && openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt \
-#     && cp server.crt /etc/ssl/certs/ \
-#     && cp server.key /etc/ssl/private/ \
-#     && rm -rf /tmp/certgen
+VOLUME ["/var/lib/mysql", "/var/www/html", "/etc/nginx/ssl"]
 
 # Install Code-Server (Visual Studio Code)
 ENV CDR_VER 1.1156-vsc1.33.1
@@ -103,5 +96,7 @@ RUN tar zxvf /tmp/code-server${CDR_VER}-linux-x64.tar.gz -C /tmp \
 
 USER coder
 EXPOSE 8443 80 443
+
+CMD ["/bin/bash", "docker-run.sh"]
 
 ENTRYPOINT ["code-server"]
