@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 volumes:
   code:
@@ -10,14 +10,14 @@ services:
       dockerfile: Dockerfile
     image: aguaragazu/code:latest
     volumes:
-      - /opt/jjsoft/docker-siges:/home/coder/project
-      - /opt/jjsoft/code/local:/home/coder/.local
-      - /opt/jjsoft/code/cache:/home/coder/.cache
+      - ./conf/coder-config.yaml:/home/coder/.config/code-server/config.yaml
+      - ./project/index.php:/var/www/html/index.php
+      - ./project:/home/coder/project
+      - ./data/local:/home/coder/.local
+      - ./data/cache:/home/coder/.cache
     ports:
-      - 8082:8443
-      - 8080:80
-      - 8081:443
-    environment:
-      - PASSWORD=password
-    command: --allow-http
-
+      - 4200:4200
+      - 8080:8080
+      - 80:80
+      - 443:443
+  
